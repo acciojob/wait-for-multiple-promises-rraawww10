@@ -29,5 +29,43 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
+	  <script>
+		  document.addEventListener("DOMContentLoaded", () => {
+  const output = document.getElementById("output");
+  const loadingRow = document.createElement("tr");
+  loadingRow.innerHTML = `<td colspan="2">Loading...</td>`;
+  output.appendChild(loadingRow);
+
+  const promises = [
+    new Promise((resolve) => {
+      const time = Math.random() * 2 + 1;
+      setTimeout(() => resolve({ id: 1, time: time.toFixed(3) }), time * 1000);
+    }),
+    new Promise((resolve) => {
+      const time = Math.random() * 2 + 1;
+      setTimeout(() => resolve({ id: 2, time: time.toFixed(3) }), time * 1000);
+    }),
+    new Promise((resolve) => {
+      const time = Math.random() * 2 + 1;
+      setTimeout(() => resolve({ id: 3, time: time.toFixed(3) }), time * 1000);
+    }),
+  ];
+
+  const startTime = performance.now();
+  Promise.all(promises).then((results) => {
+    const totalTime = ((performance.now() - startTime) / 1000).toFixed(3);
+    output.innerHTML = "";
+    results.forEach((result) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>Promise ${result.id}</td><td>${result.time}</td>`;
+      output.appendChild(row);
+    });
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `<td>Total</td><td>${totalTime}</td>`;
+    output.appendChild(totalRow);
+  });
+});
+
+	  </script>
   </body>
 </html>
